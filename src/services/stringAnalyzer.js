@@ -1,63 +1,78 @@
 const crypto = require('crypto');
 
-const MAX_LENGTH = parseInt(process.env.MAX_STRING_LENGTH || '10000', 10);
-
-function generateSha256(value) {
-  return crypto.createHash('sha256').update(value, 'utf8').digest('hex');
-}
-
-function calculateLength(value) {
-  return [...value].length; // counts codepoints (includes spaces)
-}
-
-function isPalindrome(value) {
-  // ignore case and spaces for palindrome check (documented behaviour)
-  const cleaned = value.toLowerCase().replace(/\s+/g, '');
-  return cleaned === cleaned.split('').reverse().join('');
-}
-
-function countUniqueCharacters(value) {
-  // Exclude spaces from unique character count
-  const set = new Set([...value.replace(/\s+/g, '')]);
-  return set.size;
-}
-
-function countWords(value) {
-  if (!value.trim()) return 0;
-  return value.trim().split(/\s+/).length;
-}
-
-function characterFrequencyMap(value) {
-  const freq = {};
-  for (const ch of value) {
-    freq[ch] = (freq[ch] || 0) + 1;
+/**
+ * Analyzes a string and returns all computed properties
+ */
+class StringAnalyzer {
+  /**
+   * Calculate the length of the string
+   */
+  static calculateLength(str) {
+    return str.length;
   }
-  return freq;
-}
 
-function analyzeString(value) {
-  if (typeof value !== 'string') throw new TypeError('value must be string');
-  if (value.length > MAX_LENGTH) throw new Error(`value exceeds max length ${MAX_LENGTH}`);
+  /**
+   * Check if string is a palindrome (case-insensitive)
+   */
+  static isPalindrome(str) {
+    const cleaned = str.toLowerCase().replace(/\s/g, '');
+    return cleaned === cleaned.split('').reverse().join('');
+  }
 
-  const sha256_hash = generateSha256(value);
-  const length = calculateLength(value);
-  const palindrome = isPalindrome(value);
-  const unique_characters = countUniqueCharacters(value);
-  const word_count = countWords(value);
-  const character_frequency_map = characterFrequencyMap(value);
+  /**
+   * Count unique characters in the string
+   */
+  static countUniqueCharacters(str) {
+    return new Set(str).size;
+  }
 
-  return {
-    id: sha256_hash,
-    value,
-    properties: {
-      length,
-      is_palindrome: palindrome,
-      unique_characters,
-      word_count,
-      sha256_hash,
-      character_frequency_map
+  /**
+   * Count words separated by whitespace
+   */
+  static countWords(str) {
+    const trimmed = str.trim();
+    if (trimmed === '') return 0;
+    return trimmed.split(/\s+/).length;
+  }
+
+  /**
+   * Generate SHA-256 hash of the string
+   */
+  static generateSHA256(str) {
+    return crypto.createHash('sha256').update(str).digest('hex');
+  }
+
+  /**
+   * Create character frequency map
+   */
+  static createCharacterFrequencyMap(str) {
+    const frequencyMap = {};
+    for (const char of str) {
+      frequencyMap[char] = (frequencyMap[char] || 0) + 1;
     }
-  };
+    return frequencyMap;
+  }
+
+  /**
+   * Analyze string and return all properties
+   */
+  static analyze(str) {
+    const sha256Hash = this.generateSHA256(str);
+    
+    return {
+      id: sha256Hash,
+      value: str,
+      properties: {
+        length: this.calculateLength(str),
+        is_palindrome: this.isPalindrome(str),
+        unique_characters: this.countUniqueCharacters(str),
+        word_count: this.countWords(str),
+        sha256_hash: sha256Hash,
+        character_frequency_map: this.createCharacterFrequencyMap(str)
+      },
+      created_at: new Date().toISOString()
+    };
+  }
 }
 
-module.exports = { analyzeString, generateSha256 };
+module.exports = StringAnalyzer;

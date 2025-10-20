@@ -81,6 +81,9 @@ const createString = async (req, res, next) => {
 const getStringByValue = async (req, res, next) => {
   try {
     const stringValue = decodeURIComponent(req.params.string_value);
+    
+    // TEMPORARY LOG: Check what value the server is searching for
+    console.log('Attempting to fetch string:', stringValue);
 
     // Query database by value
     const { data, error } = await supabase
@@ -90,17 +93,21 @@ const getStringByValue = async (req, res, next) => {
       .single();
 
     if (error || !data) {
+      // Log the specific Supabase error if one occurred, otherwise assume Not Found.
+      if (error) {
+        console.error('Supabase fetch error (GET /strings/:value):', error);
+      }
       return res.status(404).json({
         error: 'Not Found',
         message: 'String does not exist in the system'
       });
     }
 
-    // Format response
+    // Format response: This section correctly matches your required schema.
     const response = {
-      id: data.id,
-      value: data.value,
-      properties: {
+      id: data.id, // e.g., "sha256_hash_value"
+      value: data.value, // e.g., "requested string"
+      properties: { // Matches the nested properties object
         length: data.length,
         is_palindrome: data.is_palindrome,
         unique_characters: data.unique_characters,
@@ -108,7 +115,7 @@ const getStringByValue = async (req, res, next) => {
         sha256_hash: data.sha256_hash,
         character_frequency_map: data.character_frequency_map
       },
-      created_at: data.created_at
+      created_at: data.created_at // e.g., "2025-08-27T10:00:00Z"
     };
 
     res.status(200).json(response);
