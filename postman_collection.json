@@ -1,0 +1,387 @@
+{
+  "info": {
+    "name": "String Analyzer API",
+    "description": "Complete API collection for testing String Analyzer endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/health",
+          "host": ["{{base_url}}"],
+          "path": ["health"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create String - Simple",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"value\": \"Hello World\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/strings",
+          "host": ["{{base_url}}"],
+          "path": ["strings"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create String - Palindrome",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"value\": \"racecar\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/strings",
+          "host": ["{{base_url}}"],
+          "path": ["strings"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create String - Multi-word Palindrome",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"value\": \"A man a plan a canal Panama\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/strings",
+          "host": ["{{base_url}}"],
+          "path": ["strings"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create String - Missing Value (Error)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{}"
+        },
+        "url": {
+          "raw": "{{base_url}}/strings",
+          "host": ["{{base_url}}"],
+          "path": ["strings"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create String - Wrong Type (Error)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"value\": 12345\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/strings",
+          "host": ["{{base_url}}"],
+          "path": ["strings"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Specific String",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/strings/Hello World",
+          "host": ["{{base_url}}"],
+          "path": ["strings", "Hello World"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get String - Not Found (Error)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/strings/nonexistent",
+          "host": ["{{base_url}}"],
+          "path": ["strings", "nonexistent"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get All Strings - No Filters",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/strings",
+          "host": ["{{base_url}}"],
+          "path": ["strings"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get All Strings - Filter by Palindrome",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/strings?is_palindrome=true",
+          "host": ["{{base_url}}"],
+          "path": ["strings"],
+          "query": [
+            {
+              "key": "is_palindrome",
+              "value": "true"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get All Strings - Filter by Length Range",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/strings?min_length=5&max_length=20",
+          "host": ["{{base_url}}"],
+          "path": ["strings"],
+          "query": [
+            {
+              "key": "min_length",
+              "value": "5"
+            },
+            {
+              "key": "max_length",
+              "value": "20"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get All Strings - Filter by Word Count",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/strings?word_count=2",
+          "host": ["{{base_url}}"],
+          "path": ["strings"],
+          "query": [
+            {
+              "key": "word_count",
+              "value": "2"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get All Strings - Filter by Character",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/strings?contains_character=a",
+          "host": ["{{base_url}}"],
+          "path": ["strings"],
+          "query": [
+            {
+              "key": "contains_character",
+              "value": "a"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get All Strings - Combined Filters",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/strings?is_palindrome=true&min_length=5&word_count=1",
+          "host": ["{{base_url}}"],
+          "path": ["strings"],
+          "query": [
+            {
+              "key": "is_palindrome",
+              "value": "true"
+            },
+            {
+              "key": "min_length",
+              "value": "5"
+            },
+            {
+              "key": "word_count",
+              "value": "1"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Natural Language - Single Word Palindromes",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/strings/filter-by-natural-language?query=all single word palindromic strings",
+          "host": ["{{base_url}}"],
+          "path": ["strings", "filter-by-natural-language"],
+          "query": [
+            {
+              "key": "query",
+              "value": "all single word palindromic strings"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Natural Language - Longer Than 10",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/strings/filter-by-natural-language?query=strings longer than 10 characters",
+          "host": ["{{base_url}}"],
+          "path": ["strings", "filter-by-natural-language"],
+          "query": [
+            {
+              "key": "query",
+              "value": "strings longer than 10 characters"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Natural Language - Contains Letter Z",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/strings/filter-by-natural-language?query=strings containing the letter z",
+          "host": ["{{base_url}}"],
+          "path": ["strings", "filter-by-natural-language"],
+          "query": [
+            {
+              "key": "query",
+              "value": "strings containing the letter z"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Natural Language - First Vowel",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/strings/filter-by-natural-language?query=palindromic strings that contain the first vowel",
+          "host": ["{{base_url}}"],
+          "path": ["strings", "filter-by-natural-language"],
+          "query": [
+            {
+              "key": "query",
+              "value": "palindromic strings that contain the first vowel"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete String",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/strings/Hello World",
+          "host": ["{{base_url}}"],
+          "path": ["strings", "Hello World"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete String - Not Found (Error)",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/strings/nonexistent",
+          "host": ["{{base_url}}"],
+          "path": ["strings", "nonexistent"]
+        }
+      },
+      "response": []
+    }
+  ]
+}
